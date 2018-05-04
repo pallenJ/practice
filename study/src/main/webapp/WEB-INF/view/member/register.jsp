@@ -11,6 +11,19 @@
 	src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+	
+		<c:if test="${re_success}">
+           <script>
+            location.href = 'home';
+           </script>
+       </c:if>
+		<c:if test="${re_fail}">
+           <script>
+           alert('회원가입에 실패했습니다');
+		   history.back();
+           </script>
+       </c:if>
+
 <title>register</title>
 
 <script>

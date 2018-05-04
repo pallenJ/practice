@@ -1,5 +1,11 @@
 package sy.service;
 
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +15,8 @@ import sy.model.MemberDao;
 public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDao memberDao;
-	@Autowired
-	private OtherService otherService;
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Override
 	public MemberDao getDao() {
@@ -26,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
 			flag= memberDao.register(email, id, pw);
 			if(!flag) throw new Exception();
 		} catch (Exception e) {
-			otherService.showMessage("회원가입에 실패하였습니다.");
+			log.debug("회원가입에 실패하였습니다.");
 		}
 		return flag;
 	}

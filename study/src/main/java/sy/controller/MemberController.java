@@ -63,15 +63,16 @@ public class MemberController {
 	}
 	@RequestMapping("/register")
 	public String register(Model model) {
-		/*model.addAttribute("emails",memberService.getDao().emailList());*/
 		return "member/register";
 		
 	}
 	
 	@RequestMapping(value="/register",method = RequestMethod.POST)
 	public String register(String email,String id,String pw,Model model) {
-		model.addAttribute("re_back", !memberService.register(email, id, pw));
-		return "/home";
+		
+		model.addAttribute("re_fail", !memberService.register(email, id, pw));
+		model.addAttribute("re_success", memberService.register(email, id, pw));
+		return "member/register";
 	}
 	
 
@@ -85,5 +86,17 @@ public class MemberController {
 		
 	}
 	
-	
+	public void showMessage(String message) {
+		// TODO Auto-generated method stub
+		response.setContentType("text/html; charset=UTF-8");
+		try(PrintWriter out= response.getWriter();) {
+			out.append("<script>");
+			out.append("alert('"+message+"');");
+			out.append("</script>");
+			out.flush();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
