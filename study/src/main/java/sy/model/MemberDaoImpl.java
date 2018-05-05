@@ -91,7 +91,7 @@ public class MemberDaoImpl implements MemberDao{
 		return jdbcTemplate.query("select * from s_member where "+col+"=?", mapper,keyword);
 	}
 
-	@Override
+	@Override 
 	public Set<String> emailList() {
 		// TODO Auto-generated method stub
 		return new HashSet<String>(jdbcTemplate.query("select * from s_member",
