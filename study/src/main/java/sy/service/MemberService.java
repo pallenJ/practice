@@ -6,5 +6,5 @@ public interface MemberService {
 	
 	MemberDao getDao();
 	boolean register(String email,String name,String pw);
-	/*void showMessage(String message);*/
+	byte[] hexToByteArray(String hex); 
 }

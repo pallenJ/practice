@@ -46,30 +46,20 @@ public class MemberController {
 	private MemberService memberService;
 
 	@RequestMapping("/login")
-	public String login(Model model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public String login(Model model) throws Exception {
 		if (session.getAttribute("loginEmail") != null) {
 			model.addAttribute("arl_login", true);
 			return "member/login";
 		}
-		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-		generator.initialize(2048);
 
-		KeyPair keyPair = generator.genKeyPair();
-		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-
-		PublicKey publicKey = keyPair.getPublic();
-		PrivateKey privateKey = keyPair.getPrivate();
-
-		session.setAttribute("_RSA_WEB_Key_", privateKey);
-
-		RSAPublicKeySpec publicSpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
-
+		RSAPublicKeySpec publicSpec = incryptionRSA();
+		
 		String publicKeyModulus = publicSpec.getModulus().toString(16);
 		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
 
 		request.setAttribute("RSAModulus", publicKeyModulus);
 		request.setAttribute("RSAExponent", publicKeyExponent);
-
+		
 		return "member/login";
 	}
 
@@ -77,13 +67,12 @@ public class MemberController {
 	public String login(String email, String pw, Model model) throws Exception {
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_Key_");
 
-		email = decryptRsa(privateKey, email);
-		pw = decryptRsa(privateKey, pw);
+		email = decryptionRSA(privateKey, email);
+		pw = decryptionRSA(privateKey, pw);
 		session.removeAttribute("_RSA_WEB_Key_");
 
 		if (memberService.getDao().login(email, pw)) {
 			session.setAttribute("loginEmail", email);
-			session.setAttribute("loginPw", pw);
 			model.addAttribute("re_home", true);
 		} else {
 			model.addAttribute("login_fail", true);
@@ -95,22 +84,45 @@ public class MemberController {
 	@RequestMapping(value = "/logout")
 	public String logout(String email, String pw, Model model) {
 		session.removeAttribute("loginEmail");
-		session.removeAttribute("loginPw");
 		model.addAttribute("re_home", true);
 		return "/home";
 	}
 
 	@RequestMapping("/register")
-	public String register(Model model) {
+	public String register(Model model) throws Exception {
+		if (session.getAttribute("loginEmail") != null) {
+			model.addAttribute("arl_login", true);
+			return "home";
+		}
+		
+		RSAPublicKeySpec publicSpec = incryptionRSA();
+		
+		String publicKeyModulus = publicSpec.getModulus().toString(16);
+		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+
+		session.setAttribute("RSAModulus", publicKeyModulus);
+		session.setAttribute("RSAExponent", publicKeyExponent);
 		return "member/register";
 
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(String email, String name, String pw, Model model) {
+	public String register(String email, String name, String pw, Model model) throws Exception {
+		
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_Key_");
+
+		email = decryptionRSA(privateKey, email);
+		name  = decryptionRSA(privateKey, name);
+		pw 	  = decryptionRSA(privateKey, pw);
+		
+		session.removeAttribute("_RSA_WEB_Key_");
+		
+		
 		boolean flag = memberService.register(email, name, pw);
 		model.addAttribute("re_fail", !flag);
-		model.addAttribute("re_success", flag);
+		model.addAttribute("re_home", flag);
+		if(flag)
+		session.setAttribute("loginEmail", email);
 		return "member/register";
 	}
 
@@ -136,27 +148,30 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
+	private RSAPublicKeySpec incryptionRSA() throws Exception {
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(2048);
 
-	private String decryptRsa(PrivateKey privateKey, String securedValue) throws Exception {
+		KeyPair keyPair = generator.genKeyPair();
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+
+		session.setAttribute("_RSA_WEB_Key_", privateKey);
+
+		return keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+	}
+	
+	private String decryptionRSA(PrivateKey privateKey, String securedValue) throws Exception {
+		
 		Cipher cipher = Cipher.getInstance("RSA");
-		byte[] encryptedBytes = hexToByteArray(securedValue);
-		cipher.init(Cipher.DECRYPT_MODE, privateKey);
-		byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-		String decryptedValue = new String(decryptedBytes, "utf-8");
-		return decryptedValue;
+        byte[] encryptedBytes = memberService.hexToByteArray(securedValue);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+        String decryptedValue = new String(decryptedBytes, "utf-8");
+        return decryptedValue;
 	}
 
-	public static byte[] hexToByteArray(String hex) {
-		if (hex == null || hex.length() % 2 != 0) {
-			return new byte[] {};
-		}
-
-		byte[] bytes = new byte[hex.length() / 2];
-		for (int i = 0; i < hex.length(); i += 2) {
-			byte value = (byte) Integer.parseInt(hex.substring(i, i + 2), 16);
-			bytes[(int) Math.floor(i / 2)] = value;
-		}
-		return bytes;
-	}
 
 }

@@ -1,9 +1,5 @@
 package sy.service;
 
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +24,28 @@ public class MemberServiceImpl implements MemberService {
 	public boolean register(String email, String name, String pw) {
 		// TODO Auto-generated method stub
 		boolean flag=false;
-		try {
-			flag= memberDao.register(email, name, pw);
+		flag= memberDao.register(email, name, pw);
+/*		try {
 			if(!flag) throw new Exception();
 		} catch (Exception e) {
 			log.debug("회원가입에 실패하였습니다.");
-		}
+		}*/
 		return flag;
+	}
+
+	@Override
+	public byte[] hexToByteArray(String hex) {
+		// TODO Auto-generated method stub
+		if (hex == null || hex.length() % 2 != 0) {
+			return new byte[] {};
+		}
+		 int len = hex.length();
+		 byte[] data = new byte[len / 2];
+		    for (int i = 0; i < len; i += 2) {
+		    	data[(int) Math.floor(i / 2)] = 
+		    			(byte) Integer.parseInt(hex.substring(i, i + 2), 16);
+		    }
+		    return data;
 	}
 
 	
