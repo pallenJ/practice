@@ -25,11 +25,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean register(String email, String id, String pw) {
+	public boolean register(String email, String name, String pw) {
 		// TODO Auto-generated method stub
 		boolean flag=false;
 		try {
-			flag= memberDao.register(email, id, pw);
+			flag= memberDao.register(email, name, pw);
 			if(!flag) throw new Exception();
 		} catch (Exception e) {
 			log.debug("회원가입에 실패하였습니다.");

@@ -109,8 +109,8 @@
 			</div>
 
 			<div class='form-group'>
-				<label for='id'>nick name</label> <input type='id'
-					class='form-control' id='id' name='id' placeholder='nick name'
+				<label for='id'>name</label> <input type='text'
+					class='form-control' id='name' name='name' placeholder='이름'
 					required>
 			</div>
 

@@ -33,107 +33,102 @@ import sy.service.MemberService;
 
 @Controller
 public class MemberController {
-	
+
 	@Autowired
 	private HttpSession session;
 	@Autowired
 	private HttpServletRequest request;
 	@Autowired
 	private HttpServletResponse response;
-	
+
 	private Logger log = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private MemberService memberService;
-	
+
 	@RequestMapping("/login")
 	public String login(Model model) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		if(session.getAttribute("loginEmail")!=null) {
-		model.addAttribute("arl_login",true);
-		return "member/login";
+		if (session.getAttribute("loginEmail") != null) {
+			model.addAttribute("arl_login", true);
+			return "member/login";
 		}
-			KeyPairGenerator generator= KeyPairGenerator.getInstance("RSA");
-			generator.initialize(2048);
-			
-			KeyPair keyPair = generator.genKeyPair();
-			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-			
-			PublicKey publicKey = keyPair.getPublic();
-			PrivateKey privateKey = keyPair.getPrivate();
-	 
-			session.setAttribute("_RSA_WEB_Key_", privateKey);
-			
-			RSAPublicKeySpec publicSpec =keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
-			
-			String publicKeyModulus = publicSpec.getModulus().toString(16);
-			String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
-	 
-			request.setAttribute("RSAModulus", publicKeyModulus);  
-			request.setAttribute("RSAExponent", publicKeyExponent);
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(2048);
 
+		KeyPair keyPair = generator.genKeyPair();
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-			
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+
+		session.setAttribute("_RSA_WEB_Key_", privateKey);
+
+		RSAPublicKeySpec publicSpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+
+		String publicKeyModulus = publicSpec.getModulus().toString(16);
+		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+
+		request.setAttribute("RSAModulus", publicKeyModulus);
+		request.setAttribute("RSAExponent", publicKeyExponent);
+
 		return "member/login";
 	}
-	
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String login(String email ,String pw ,Model model) throws Exception {
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(String email, String pw, Model model) throws Exception {
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_Key_");
 
 		email = decryptRsa(privateKey, email);
 		pw = decryptRsa(privateKey, pw);
-		 session.removeAttribute("_RSA_WEB_Key_");
+		session.removeAttribute("_RSA_WEB_Key_");
 
-		
-		if(memberService.getDao().login(email, pw)) {
+		if (memberService.getDao().login(email, pw)) {
 			session.setAttribute("loginEmail", email);
 			session.setAttribute("loginPw", pw);
 			model.addAttribute("re_home", true);
-		}else {
+		} else {
 			model.addAttribute("login_fail", true);
 		}
-		
-		
+
 		return "member/login";
 	}
-	
-	@RequestMapping(value="/logout")
-	public String logout(String email ,String pw ,Model model) {
+
+	@RequestMapping(value = "/logout")
+	public String logout(String email, String pw, Model model) {
 		session.removeAttribute("loginEmail");
 		session.removeAttribute("loginPw");
 		model.addAttribute("re_home", true);
 		return "/home";
 	}
+
 	@RequestMapping("/register")
 	public String register(Model model) {
 		return "member/register";
-		
+
 	}
-	
-	@RequestMapping(value="/register",method = RequestMethod.POST)
-	public String register(String email,String id,String pw,Model model) {
-		
-		model.addAttribute("re_fail", !memberService.register(email, id, pw));
-		model.addAttribute("re_success", memberService.register(email, id, pw));
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String register(String email, String name, String pw, Model model) {
+		boolean flag = memberService.register(email, name, pw);
+		model.addAttribute("re_fail", !flag);
+		model.addAttribute("re_success", flag);
 		return "member/register";
 	}
-	
 
-	@RequestMapping(value="/check", method = RequestMethod.POST)
+	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	@ResponseBody
-	public String check(String email,Model model) {
+	public String check(String email, Model model) {
 		boolean flag = memberService.getDao().overlapCheck(email);
-	
-		return String.valueOf(model.addAttribute("check",flag));
-		
-		
+
+		return String.valueOf(model.addAttribute("check", flag));
+
 	}
-	
+
 	public void showMessage(String message) {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
-		try(PrintWriter out= response.getWriter();) {
+		try (PrintWriter out = response.getWriter();) {
 			out.append("<script>");
-			out.append("alert('"+message+"');");
+			out.append("alert('" + message + "');");
 			out.append("</script>");
 			out.flush();
 		} catch (Exception e) {
@@ -141,26 +136,27 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
-    private String decryptRsa(PrivateKey privateKey, String securedValue) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        byte[] encryptedBytes = hexToByteArray(securedValue);
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-        String decryptedValue = new String(decryptedBytes, "utf-8");
-        return decryptedValue;
-    }
-    
-    public static byte[] hexToByteArray(String hex) {
-        if (hex == null || hex.length() % 2 != 0) { return new byte[] {}; }
- 
-        byte[] bytes = new byte[hex.length() / 2];
-        for (int i = 0; i < hex.length(); i += 2) {
-            byte value = (byte) Integer.parseInt(hex.substring(i, i + 2), 16);
-            bytes[(int) Math.floor(i / 2)] = value;
-        }
-        return bytes;
-    }
 
+	private String decryptRsa(PrivateKey privateKey, String securedValue) throws Exception {
+		Cipher cipher = Cipher.getInstance("RSA");
+		byte[] encryptedBytes = hexToByteArray(securedValue);
+		cipher.init(Cipher.DECRYPT_MODE, privateKey);
+		byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+		String decryptedValue = new String(decryptedBytes, "utf-8");
+		return decryptedValue;
+	}
 
+	public static byte[] hexToByteArray(String hex) {
+		if (hex == null || hex.length() % 2 != 0) {
+			return new byte[] {};
+		}
+
+		byte[] bytes = new byte[hex.length() / 2];
+		for (int i = 0; i < hex.length(); i += 2) {
+			byte value = (byte) Integer.parseInt(hex.substring(i, i + 2), 16);
+			bytes[(int) Math.floor(i / 2)] = value;
+		}
+		return bytes;
+	}
 
 }

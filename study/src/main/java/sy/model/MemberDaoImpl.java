@@ -32,7 +32,7 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public boolean register(MemberDto mem) {
 		// TODO Auto-generated method stub
-		return register(mem.getEmail(),mem.getId(),mem.getPw());
+		return register(mem.getEmail(),mem.getName(),mem.getPw());
 	}
 
 	private ResultSetExtractor<MemberDto> extractor = rs->{

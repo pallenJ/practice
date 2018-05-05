@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class MemberDto {
 
 	private String email;
-	private String id;
+	private String name;
 	private String pw;
 	private String grade;
 	private String reg;
@@ -15,7 +15,7 @@ public class MemberDto {
 	
 	public MemberDto(ResultSet rs) throws SQLException {
 		setEmail(rs.getString("email"));
-		setId(rs.getString("id"));
+		setName(rs.getString("name"));
 		setPw(rs.getString("pw"));
 		setGrade(rs.getString("grade"));
 		setReg(rs.getString("reg"));
@@ -31,11 +31,11 @@ public class MemberDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getPw() {
 		return pw;
