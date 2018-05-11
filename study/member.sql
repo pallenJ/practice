@@ -1,4 +1,4 @@
-conn sw3/sw3;
+conn pallen/pallen;
 
 CREATE TABLE s_member(
 email varchar2(100) PRIMARY KEY NOT NULL,

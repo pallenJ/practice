@@ -4,7 +4,7 @@
     
     
     
-    <wb-module deploy-name="poll-0.0.1-SNAPSHOT">
+    <wb-module deploy-name="study-0.0.1-SNAPSHOT">
                                                 
         
         
@@ -36,8 +36,7 @@
         
         
         <property name="java-output-path" value="/movie_project/target/classes"/>
-                
-        <property name="context-root" value="poll"/>
+        <property name="context-root" value="study"/>
                                             
     
     
