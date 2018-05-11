@@ -143,6 +143,13 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.20</version>
+			<scope>provided</scope>
+		</dependency>
 
 
 		<!-- Test Artifacts -->
@@ -187,6 +194,6 @@
 			<artifactId>spring-security-rsa</artifactId>
 			<version>1.0.5.RELEASE</version>
 		</dependency>
-		
+
 	</dependencies>
 </project>
