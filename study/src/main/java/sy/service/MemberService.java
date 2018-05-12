@@ -7,4 +7,5 @@ public interface MemberService {
 	MemberDao getDao();
 	boolean register(String email,String name,String pw);
 	byte[] hexToByteArray(String hex); 
+	public void mailCertification(String to);
 }
