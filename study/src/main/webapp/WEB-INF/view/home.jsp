@@ -13,14 +13,24 @@
 			history.back();
 		</script>
 	</c:if>
-
+	<script type="text/javascript">
+		$(function() {
+			$('#email-test').click(function() {
+			if(!confirm('설정된 이메일로 인증번호를 보내드리겠습니다.')) return;
+			window.open('emailpf','new','left=50, top=50, width=400, height=500');
+			
+			})
+		});
+	
+    </script>
 <html>
 <head>
 <title>Insert title here</title>
 </head>
 <body>
-	<h1><a href="login">로그인</a></h1><br>
-	<h1><a href="logout">로그아웃</a></h1>
-	<h1><a href="register">회원가입</a></h1>
+	<h1><a href='login'>로그인</a></h1>
+	<h1><a href='logout'>로그아웃</a></h1>
+	<h1><a href='register'>회원가입</a></h1>
+	<!-- <h1><a href="#" id='email-test'>이메일 인증</a></h1> -->
 </body>
 </html>

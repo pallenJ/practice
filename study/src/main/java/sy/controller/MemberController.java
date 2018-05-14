@@ -118,6 +118,17 @@ public class MemberController {
 		session.setAttribute("loginEmail", email);
 		return "member/register";
 	}
+	
+	@RequestMapping(value = {"/emailpf","/emailPf"})
+	public String emailPf(String email,Model model) {
+		String pfKey=memberService.emailPf(email);
+		if(pfKey==null) {
+			model.addAttribute("errorMSG", pfKey);
+		}else {
+		model.addAttribute("pfKey", pfKey);
+		}
+		return "member/emailpf";
+	}
 
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	@ResponseBody
@@ -127,7 +138,7 @@ public class MemberController {
 		return String.valueOf(model.addAttribute("check", flag));
 
 	}
-
+	
 	public void showMessage(String message) {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
@@ -141,6 +152,9 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
 	private RSAPublicKeySpec incryptionRSA() throws Exception {
 		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
 		generator.initialize(2048);

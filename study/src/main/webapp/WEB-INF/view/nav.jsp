@@ -22,10 +22,11 @@
 
 <c:if test="${login_fail}">
 	<script type="text/javascript">
-		alert('잘못된 이메일/ 비밀번호 입니다.');
+		alert($('#error-message'));
 		history.back();
 	</script>
 </c:if>
+
 
 <c:if test="${re_home}">
 	<script type="text/javascript">
@@ -33,6 +34,7 @@
 	</script>
 </c:if>
 
+<input type="hidden" id="error-message" value="${errorMSG}">
 <input type="hidden" id="saveID" value="${sessionScope.loginEmail}">
 
 <h1>email: ${sessionScope.loginEmail}</h1>
@@ -101,5 +103,12 @@
 	<script>
 		alert('회원가입에 실패했습니다');
 		history.back();
+	</script>
+</c:if>
+
+<c:if test="${re_login}">
+	<script>
+		alert('먼저 로그인 해주세요');
+		location.href = 'login';
 	</script>
 </c:if>
