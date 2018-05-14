@@ -122,11 +122,7 @@ public class MemberController {
 	@RequestMapping(value = {"/emailpf","/emailPf"})
 	public String emailPf(String email,Model model) {
 		String pfKey=memberService.emailPf(email);
-		if(pfKey==null) {
-			model.addAttribute("errorMSG", pfKey);
-		}else {
 		model.addAttribute("pfKey", pfKey);
-		}
 		return "member/emailpf";
 	}
 

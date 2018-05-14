@@ -20,11 +20,12 @@
 <script type='text/javascript'>
 	
 	$(function() {
-		var pfkey=$('#pfKey').val();
 		
 		$('#pf-btn').click(function() {
+			var pfkey=$('#pfKey').val();
 			var flag = pfkey==$('#emailIns').val();
 			$('#pf-result').val(flag);
+			alert(pfkey+'/'+$('#emailIns').val()+'/'+flag)
 			if(flag){
 				alert('인증이 완료되었습니다.')
 				$('#reg_id').removeClass('is-invalid');
@@ -33,6 +34,8 @@
 				$('#reg_site').addClass('is-valid');
 				$('#checkMsg').html('<p style="color:green">사용가능한 이메일 입니다</p>');
 				$('#reg_id').prop('disabled', true);
+			}else{
+				alert('인증번호를 다시 입력해 주세요.')
 			}
 			
 		});
@@ -43,12 +46,10 @@
 	});
 	
 </script>
-
+<br>
 	<div style='float: none; margin: 0 auto;'
 		>
 		<input type='hidden' value='${pfKey}' id='pfKey'>
-		<%-- <p>${pfKey}</p> --%>
-		<!-- <p id='emailpf'></p> -->
 		
 		<div class='form-group'>
 			

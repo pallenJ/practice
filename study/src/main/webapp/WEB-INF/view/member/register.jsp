@@ -48,12 +48,10 @@
 			setEmail();
 			allChecking();
 		});
-		/* $('#se_site').keyup(function() {
-			setEmail();
-		}); */
 		
 		
 		$('#emailPfshow').click(function() {
+			$('#checkMsg').html('<p style="color:gray">잠깐만 기다려 주세요...</p>');
 	 		$.ajax(
 				{
 					      type: 'POST'
@@ -61,8 +59,15 @@
 						, data : {
 							'email' : $('#reg_email').val()
 						} 
-						, success: function(data) { 
-							$("#checkMsg").html(data);
+						, success: function(data) {
+							$('#checkMsg').html(data);
+							    if($('#pfKey').val()==null||$('#pfKey').val()==''){
+								alert('존재하지 않는 이메일 주소 입니다.');
+								$('#reg_id').addClass('is-invalid');
+								$('#reg_site').addClass('is-invalid');
+								$('#checkMsg').html('<p style="color:red">존재하지 않는 이메일 입니다</p>');
+								return;
+							}
 							$('#emailPfshow').remove();	
 						}
 						,error : function(request, status, error) {
@@ -111,29 +116,22 @@
 						}else if (regFlag) {
 							var msg = email.val() == '@' ? '이메일을 입력해 주세요'
 									: '유효하지 않은 이메일 입니다'+'<br>';
-							id.removeClass('is-valid');
 							id.addClass('is-invalid')
-							site.removeClass('is-valid');
 							site.addClass('is-invalid');
 							$('#checkMsg').html(
 									'<p style="color:red">' + msg + '</p>');
 						} else{
-							/*
-							var scls = flag ? 'is-valid' : 'is-invalid';
-							var other = flag ? 'is-invalid' : 'is-valid';
-							var color = flag ? 'green' : 'red';
-							 */
 							 $('#emailPfshow').prop('disabled',!flag);
-							 
-							var scls = flag ? '' : 'is-invalid';
-							var other = flag ? 'is-invalid' : '';
+							
 							var color = flag ? 'blue' : 'red';
+							if(flag) {
+								id.removeClass('is-invalid');
+								site.removeClass('is-invalid');	
+							}else{
+								id.addClass('is-invalid');
+								site.addClass('is-invalid');
+								}
 
-							id.removeClass(other);
-							id.addClass(scls)
-
-							site.removeClass(other);
-							site.addClass(scls)
 
 							$('#checkMsg').html(
 									'<p style="color:'
@@ -143,7 +141,7 @@
 											+ (flag ? '이메일 인증을 진행해 주세요.&nbsp;' : '<br>')
 											+ '</p>');
 						}
-						//flag&&email.val() !=null&&email.val()!=''
+
 						flag = flag && !regFlag && pwChecking()&&pfFlag
 								&& ($('reg_name') != '');
 						$('#signUpBtn').prop('disabled', !flag);
@@ -182,7 +180,6 @@
 
 </head>
 <body>
-	
 	<jsp:include page='/WEB-INF/view/_form/member/register.jsp'></jsp:include>
 
 
