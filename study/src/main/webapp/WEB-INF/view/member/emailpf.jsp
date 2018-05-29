@@ -22,10 +22,12 @@
 	$(function() {
 		
 		$('#pf-btn').click(function() {
+			
 			var pfkey=$('#pfKey').val();
 			var flag = pfkey==$('#emailIns').val();
+			
 			$('#pf-result').val(flag);
-			alert(pfkey+'/'+$('#emailIns').val()+'/'+flag)
+
 			if(flag){
 				alert('인증이 완료되었습니다.')
 				$('#reg_id').removeClass('is-invalid');

@@ -39,7 +39,7 @@
 				
 				</div>
 		</div>
-			<button type="button" id="emailPfshow" class="btn btn-primary" disabled='disabled'>이메일 인증하기</button>
+			<button type="button" id="emailPfshow" class="btn btn-primary">이메일 인증하기</button>
 			<input type="hidden" id='mailcheck-result' disabled="disabled">
 			<input type="hidden" id='pf-result' disabled="disabled">
 

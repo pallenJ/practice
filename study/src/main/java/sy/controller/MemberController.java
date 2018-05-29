@@ -66,17 +66,19 @@ public class MemberController {
 
 		if (memberService.getDao().login(email, pw)) {
 			session.setAttribute("loginEmail", email);
+			session.setAttribute("loginGrade", memberService.getDao().myInfo(email).getGrade());
 			model.addAttribute("re_home", true);
 		} else {
-			model.addAttribute("login_fail", true);
+			model.addAttribute("_fail", true);
 		}
 
 		return "member/login";
 	}
 
 	@RequestMapping(value = "/logout")
-	public String logout(String email, String pw, Model model) {
+	public String logout(Model model) {
 		session.removeAttribute("loginEmail");
+		session.removeAttribute("loginGrade");
 		model.addAttribute("re_home", true);
 		return "/home";
 	}
@@ -85,7 +87,7 @@ public class MemberController {
 	public String register(Model model) throws Exception {
 		if (session.getAttribute("loginEmail") != null) {
 			model.addAttribute("arl_login", true);
-			return "home";
+			return "/home";
 		}
 		
 		RSAPublicKeySpec publicSpec = incryptionRSA();
@@ -114,11 +116,24 @@ public class MemberController {
 		boolean flag = memberService.register(email, name, pw);
 		model.addAttribute("re_fail", !flag);
 		model.addAttribute("re_home", flag);
-		if(flag)
+		if(flag) {
 		session.setAttribute("loginEmail", email);
+		session.setAttribute("loginGrade", "normal");
+		}
 		return "member/register";
 	}
 	
+	@RequestMapping(value = {"/emailList","/emaillist","/memberlist","/memberList"})
+	public String emailList(Model model) {
+		Object grade = session.getAttribute("loginGrade");
+		if(grade==null||!grade.equals("admin")) {
+			model.addAttribute("_fail", true);
+			model.addAttribute("errorMSG","권한이 부족 합니다");
+			return "/home";
+		}
+		model.addAttribute("emailList", memberService.getDao().emailList());
+		return "member/memberList";
+	}
 	@RequestMapping(value = {"/emailpf","/emailPf"})
 	public String emailPf(String email,Model model) {
 		String pfKey=memberService.emailPf(email);

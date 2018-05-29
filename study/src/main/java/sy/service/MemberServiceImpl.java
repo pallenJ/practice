@@ -1,10 +1,8 @@
 package sy.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 
 import java.util.Random;
 
-import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 	public String emailPf(String to) {
 		// TODO Auto-generated method stub
 		try {
-			int key = new Random().nextInt(10000);
+			String key = String.format("%04d", new Random().nextInt(10000));
 			EmailHandler emailHandler=EmailHandler.getInstance();
 			log.debug("to={}",to);
 			StringBuffer message = new StringBuffer();
@@ -73,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 			emailHandler.setSubject(to+"님의 인증 번호 입니다");
 			emailHandler.setText(message.toString());
 			emailHandler.send();
-			return String.format("%04d", key);
+			return key;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

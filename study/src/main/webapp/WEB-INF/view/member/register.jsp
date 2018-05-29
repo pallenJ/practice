@@ -17,6 +17,7 @@
 
 <script>
 	$(function() {
+		$('#emailPfshow').hide();
 		$('#signUpBtn').click(function() {
 			var rsa = new RSAKey();
 			rsa.setPublic($('#RSAModulus').val(), $('#RSAExponent').val());
@@ -68,7 +69,9 @@
 								$('#checkMsg').html('<p style="color:red">존재하지 않는 이메일 입니다</p>');
 								return;
 							}
-							$('#emailPfshow').remove();	
+								alert($('#reg_email').val()+'로 인증번호가 발송되었습니다.');
+							    $('#emailPfshow').hide();
+							
 						}
 						,error : function(request, status, error) {
 							alert('code:' + request.status + '\n' + 'message:'
@@ -106,7 +109,7 @@
 						
 						
 						if(pfFlag){
-							
+							$('#emailPfshow').hide();
 							id.removeClass('is-invalid');
 							id.addClass('is-valid')
 							site.removeClass('is-invalid');
@@ -114,6 +117,7 @@
 							$('#checkMsg').html('<p style="color:green">사용가능한 이메일 입니다</p>');
 							$('#reg_id').prop('disabled', true);
 						}else if (regFlag) {
+							$('#emailPfshow').hide();
 							var msg = email.val() == '@' ? '이메일을 입력해 주세요'
 									: '유효하지 않은 이메일 입니다'+'<br>';
 							id.addClass('is-invalid')
@@ -121,15 +125,17 @@
 							$('#checkMsg').html(
 									'<p style="color:red">' + msg + '</p>');
 						} else{
-							 $('#emailPfshow').prop('disabled',!flag);
+						
 							
 							var color = flag ? 'blue' : 'red';
 							if(flag) {
 								id.removeClass('is-invalid');
-								site.removeClass('is-invalid');	
+  								site.removeClass('is-invalid');	
+							    $('#emailPfshow').show();
 							}else{
 								id.addClass('is-invalid');
 								site.addClass('is-invalid');
+								$('#emailPfshow').hide();
 								}
 
 
