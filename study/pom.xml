@@ -199,12 +199,12 @@
 			<version>2.9.4</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-rsa -->
+		<!-- RSA 암호화를 위한 dependency -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-rsa</artifactId>
 			<version>1.0.5.RELEASE</version>
 		</dependency>
-
+		
 	</dependencies>
 </project>

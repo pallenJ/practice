@@ -28,5 +28,6 @@
 	<h1><a href='register'>회원가입</a></h1>
 	<!-- <h1><a href="#" id='email-test'>이메일 인증</a></h1> -->
 	<h1><a href='memberList'>멤버 리스트</a></h1>
+	<h1><a href='board'>게시판</a></h1>
 </body>
 </html>

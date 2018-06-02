@@ -9,6 +9,7 @@ import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.Cipher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,12 +41,12 @@ public class MemberController {
 	private MemberService memberService;
 
 	@RequestMapping("/login")
-	public String login(Model model) throws Exception {
-		if (session.getAttribute("loginEmail") != null) {
+	public String login(Model model,@CookieValue(value="loginEmail",required=false)Cookie rCookie) throws Exception {
+		
+	    if (session.getAttribute("loginEmail") != null) {
 			model.addAttribute("arl_login", true);
-			return "member/login";
-		}
-
+		}else {
+	    
 		RSAPublicKeySpec publicSpec = incryptionRSA();
 		
 		String publicKeyModulus = publicSpec.getModulus().toString(16);
@@ -52,21 +54,23 @@ public class MemberController {
 
 		request.setAttribute("RSAModulus", publicKeyModulus);
 		request.setAttribute("RSAExponent", publicKeyExponent);
-		
+	    }
 		return "member/login";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String email, String pw, Model model) throws Exception {
+	public String login(String email, String pw, String remember,Model model) throws Exception {
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_Key_");
-
 		email = decryptionRSA(privateKey, email);
 		pw = decryptionRSA(privateKey, pw);
 		session.removeAttribute("_RSA_WEB_Key_");
-
+		
+		String grade = memberService.getDao().myInfo(email).getGrade();
+		
 		if (memberService.getDao().login(email, pw)) {
 			session.setAttribute("loginEmail", email);
-			session.setAttribute("loginGrade", memberService.getDao().myInfo(email).getGrade());
+			session.setAttribute("loginGrade", grade);
+			
 			model.addAttribute("re_home", true);
 		} else {
 			model.addAttribute("_fail", true);

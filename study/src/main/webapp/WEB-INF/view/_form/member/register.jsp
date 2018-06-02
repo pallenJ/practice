@@ -90,7 +90,8 @@
 		<form action='register' method='post' id='reg_frm' name='reg_frm'>
 			<input type='hidden' id='RSAModulus' value='${RSAModulus}' /> <input
 				type='hidden' id='RSAExponent' value='${RSAExponent}' /> <input
-				type='hidden' id='email' name='email' /> <input type='hidden'
+				type='hidden' id='email' name='email' /> 
+				<input type='hidden'
 				id='name' name='name' /> <input type='hidden' id='pw' name='pw' />
 			<!-- <button type='submit' style='display: hidden;' id='submitBtn'></button> -->
 		</form>

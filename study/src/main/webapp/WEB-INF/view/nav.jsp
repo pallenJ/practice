@@ -12,15 +12,7 @@
 	src='http://www-cs-students.stanford.edu/~tjw/jsbn/prng4.js'></script>
 <script type='text/javascript'
 	src='http://www-cs-students.stanford.edu/~tjw/jsbn/rng.js'></script>
-<script>
-	$(function () {
-$('#ddd').click(function() {
-	$('#aaa').html('<p>'+$('#ddd').prop('checked')+'</p>');	
-});
-	});
-	</script>
-<div id='aaa'> </div>	
-<input type="checkbox" id='ddd'>dddddddd
+
 
 <input type='hidden' id='error-message' value='${errorMSG}'>
 <input type='hidden' id='saveID' value='${sessionScope.loginEmail}'>
@@ -71,14 +63,8 @@ $('#ddd').click(function() {
 			<li class='nav-item active'><a class='nav-link' href='home'>Home
 					<span class='sr-only'>(current)</span>
 			</a></li>
-			<li class='nav-item'><a class='nav-link' href='#'>Features</a></li>
-			<li class='nav-item'><a class='nav-link' href='#'>Pricing</a></li>
-			<li class='nav-item'><a class='nav-link' href='#'>About</a></li>
 		</ul>
-		<form class='form-inline my-2 my-lg-0'>
-			<input class='form-control mr-sm-2' type='text' placeholder='Search'>
-			<button class='btn btn-secondary my-2 my-sm-0' type='submit'>Search</button>
-		</form>
+	
 	</div>
 </nav>
 <c:if test='${arl_login}'>

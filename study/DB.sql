@@ -31,7 +31,9 @@ gno number NOT NULL-- group number
 DROP SEQUENCE board_seq;
 CREATE SEQUENCE board_seq NOCACHE;
 
-insert into s_board values(board_seq.NEXTVAL,'테스트','타이틀','false','test',
+insert into s_board values(board_seq.NEXTVAL,'기타','타이틀','false','test',NULL,NULL,NULL,
 sysdate,0,'pallennellap17@gmail.com',0,0
 );
+
+update s_board set parent=no where no=(select max(no) from s_board);
 
