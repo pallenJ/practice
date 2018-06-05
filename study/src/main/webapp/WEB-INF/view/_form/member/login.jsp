@@ -28,7 +28,6 @@
 			<input type='hidden' id='RSAExponent' value='${RSAExponent}' /> 
 			<input type='hidden' name='email' id='email'/> <br>
 			<input type='hidden' name='pw'    id='pw'/>
-			 <label><input type='checkbox' name='remember'> Remember me</label>
 		</form>
 			<br> 
 		<button type='button' class='btn btn-info btn-lg' id='login_btn'

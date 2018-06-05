@@ -40,11 +40,12 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 
-	@RequestMapping("/login")
+	@RequestMapping({"/login","board/login"})
 	public String login(Model model,@CookieValue(value="loginEmail",required=false)Cookie rCookie) throws Exception {
 		
 	    if (session.getAttribute("loginEmail") != null) {
 			model.addAttribute("arl_login", true);
+	
 		}else {
 	    
 		RSAPublicKeySpec publicSpec = incryptionRSA();
@@ -75,7 +76,7 @@ public class MemberController {
 		} else {
 			model.addAttribute("_fail", true);
 		}
-
+		
 		return "member/login";
 	}
 

@@ -40,12 +40,11 @@
 
 		$('#se_site').click(function() {
 			var site = $('#se_site').val();
-			if (site == 'ist') {
-				$('#reg_site').attr('disabled', false);
-			} else {
+			var flag = site!='ist';
+			if (flag) {
 				$('#reg_site').val(site);
-				$('#reg_site').attr('disabled', true);
 			}
+				$('#reg_site').attr('disabled', flag);
 			setEmail();
 			allChecking();
 		});

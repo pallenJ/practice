@@ -2,6 +2,10 @@
 	pageEncoding='UTF-8'%>
 <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 
+<script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+<script src="https://bootswatch.com/_vendor/popper.js/dist/umd/popper.min.js"></script>
+<script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <script
 	src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
 <script type='text/javascript'
@@ -31,15 +35,10 @@
 </c:if>
 
 
-<c:if test='${re_home}'>
-	<script type='text/javascript'>
-		location.href = 'home';
-	</script>
-</c:if>
-
-
 <h1>email: ${sessionScope.loginEmail}</h1>
 <h1>grade: ${sessionScope.loginGrade}</h1>
+
+<input type='hidden' id='login-email' value='${sessionScope.loginEmail}'>
 
 <link rel='stylesheet'
 	href='https://bootswatch.com/4/spacelab/bootstrap.min.css'>
@@ -60,7 +59,7 @@
 
 	<div class='collapse navbar-collapse' id='navbarColor03'>
 		<ul class='navbar-nav mr-auto'>
-			<li class='nav-item active'><a class='nav-link' href='home'>Home
+			<li class='nav-item active'><a class='nav-link' href='/study'>Home
 					<span class='sr-only'>(current)</span>
 			</a></li>
 		</ul>
@@ -74,6 +73,7 @@
 	</script>
 </c:if>
 
+
 <c:if test='${login_fail}'>
 	<script type='text/javascript'>
 		alert('잘못된 이메일/ 비밀번호 입니다.');
@@ -83,7 +83,7 @@
 
 <c:if test='${re_home}'>
 	<script type='text/javascript'>
-		location.href = 'home';
+		location.href = '/study';
 	</script>
 </c:if>
 
@@ -104,6 +104,6 @@
 <c:if test='${re_login}'>
 	<script>
 		alert('먼저 로그인 해주세요');
-		location.href = 'login';
+		location.href = '/study/login';
 	</script>
 </c:if>

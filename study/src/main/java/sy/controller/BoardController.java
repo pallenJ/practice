@@ -61,7 +61,7 @@ public class BoardController {
 		model.addAttribute("lastPage",  addValue[2]);
 		return "board/list";
 	}
-	@RequestMapping("/board/write")
+	@RequestMapping("/write")
 	public String write(Model model) {
 		if(session.getAttribute("loginEmail")==null) {
 			model.addAttribute("re_login",true);

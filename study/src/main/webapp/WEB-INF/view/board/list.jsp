@@ -6,16 +6,21 @@
 <html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
- <link rel="stylesheet" type="text/css" href="mystyle.css">
-<title>Insert title here</title>
+<title>게시판</title>
+<script>
+	$(function() {
+		$('#sb-btn').attr('disabled', $('#login-email').val()=='');
+	});
+</script>
 
 </head>
+
 <body>
 	<br>
 	<div style='float: none; margin: 0 auto;width: 800px;'>
 	<div align='right'> 
-		<form action='board/write' method='get'>
-			<input type='submit' value='글쓰기' class='btn btn-primary'>
+		<form action='write' method='get'>
+			<button type='submit' id='sb-btn' class='btn btn-primary'>글쓰기</button>
 		</form>
 	 </div>
 	<div align='center'>
@@ -46,9 +51,9 @@
 	
 	
 			<nav>
-				<ul class="pagination pagination-lg center-block" style="text-align: center;">
+				<ul class="pagination pagination-md justify-content-center" style="text-align: center;">
 					<c:if test="${pagingNum>0}">
-						<li class="page-item"><a href='<c:url value='/board'></c:url>?pg=${pagingNum}'
+						<li class="page-item"><a class="page-link" href='<c:url value='/board'></c:url>?pg=${pagingNum}'
 							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 						</a></li>
 					</c:if>
@@ -58,8 +63,7 @@
 						<c:choose>
 							<c:when test="${pageidx == param.pg}">
 
-								<li class="page-item active"><a class="page-link"
-									href='<c:url value='/board'></c:url>?pg=${pageidx}'>${pageidx}</a>
+								<li class="page-item active"><a class="page-link">${pageidx}</a>
 								</li>
 							</c:when>
 
