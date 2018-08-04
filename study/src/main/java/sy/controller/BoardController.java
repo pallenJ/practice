@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import sy.bean.BoardDto;
 import sy.service.BoardService;
@@ -62,12 +63,29 @@ public class BoardController {
 		return "board/list";
 	}
 	@RequestMapping("/write")
-	public String write(Model model) {
+	public String write(String parent,String gno,Model model) {
 		if(session.getAttribute("loginEmail")==null) {
 			model.addAttribute("re_login",true);
 		}
-		
+		if(parent!=null&&gno!=null) {
+			request.setAttribute("parent", parent);
+			request.setAttribute("gno", gno);
+		}
 		return "board/write";
+	}
+	@RequestMapping(value="/write", method = RequestMethod.POST)
+	public String write(String board,String title,String content,String secret,Model model) {
+		log.debug("board={}",board);
+		log.debug("title={}",title);
+		log.debug("content={}",content);
+		log.debug("secret={}",secret);
+		
+		boolean flag=
+		boardService.getDao().register(board, title, secret, content, (String)session.getAttribute("loginEmail"));
+		log.debug("={}",flag);
+		
+		model.addAttribute("re_list",true);
+		return "board/list";
 	}
 	
 }

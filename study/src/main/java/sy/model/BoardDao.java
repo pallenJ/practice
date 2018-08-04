@@ -10,7 +10,8 @@ import sy.bean.BoardDto;
 public interface BoardDao {
 	
 	boolean register(BoardDto board);
-	  
+	boolean register(String board,String title,String secret,String content,String writer);
+	
 	//전체 공지 목록
 	List<BoardDto> boardlist();
 	List<BoardDto> boardSearch(String search , String keyword);

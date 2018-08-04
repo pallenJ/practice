@@ -30,7 +30,21 @@ public class BoardDaoImpl implements BoardDao{
 		};
 		return jdbcTemplate.update("insert into s_board values(?,?,?,?,?,?,?,?,sysdate,0,?,?,0)", args)>0;
 	}
-
+	@Override
+	public boolean register(String board,String title,String secret,String content,String writer) {
+		
+		BoardDto brd = new BoardDto();
+		
+		brd.setBoard(board);
+		brd.setTitle(title);
+		brd.setSecret(secret.equals("true"));
+		brd.setContent(content);
+		brd.setWriter(writer);
+		
+		return register(brd);
+	}
+	
+	
 	private RowMapper<BoardDto>mapper = (rs,idx)->{return new BoardDto(rs);};
 	
 	@Override

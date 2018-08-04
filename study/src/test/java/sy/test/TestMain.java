@@ -38,12 +38,13 @@ public class TestMain {
 		
 		boardDao.register(board);*/
 		
-//		boardDao.boardlist();
-//		boardDao.boarddetail(3);
-		log.debug("rs={}",boardDao.boarddelete(3));
+		boardDao.register("test","test","false","test","pallennellap17@gmail.com");
+		
+		
+		
 	}
 	/*@Test*/
-	 public void callURL() throws Exception {
+	/* public void callURL() throws Exception {
         int len;
         InputStream input         =        (new URL("http://localhost:8080/study/")).openStream();
         byte b[] = new byte[64000];
@@ -52,5 +53,5 @@ public class TestMain {
                 sb.append(new String(b, 0, len));
         input.close();
         System.out.println(sb.toString());
- }
+ }*/
 }

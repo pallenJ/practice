@@ -101,6 +101,13 @@
 	</script>
 </c:if>
 
+<c:if test='${re_list}'>
+	<script type='text/javascript'>
+		location.href = 'board'
+	</script>
+</c:if>
+
+
 <c:if test='${re_login}'>
 	<script>
 		alert('먼저 로그인 해주세요');
