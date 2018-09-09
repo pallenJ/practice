@@ -1,7 +1,9 @@
 package sy.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -96,6 +98,16 @@ public class MemberDaoImpl implements MemberDao{
 		// TODO Auto-generated method stub
 		return new HashSet<String>(jdbcTemplate.query("select * from s_member",
 				(rs,idx)->{return rs.getString("email");}));
+	}
+
+	@Override
+	public Map<String, MemberDto> nameList() {
+		// TODO Auto-generated method stub
+		Map<String, MemberDto> list = new HashMap<>();
+		for (String email : emailList()) {
+			list.put(email, myInfo(email));
+		}
+		return list;
 	}
 	
 	

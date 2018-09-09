@@ -2,6 +2,7 @@ package sy.test;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +13,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import sy.bean.BoardDto;
+import sy.bean.ReplyDto;
 import sy.configuration.JdbcConfiguration;
 import sy.model.BoardDao;
 import sy.model.MemberDao;
+import sy.model.ReplyDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = JdbcConfiguration.class)
@@ -24,6 +27,10 @@ public class TestMain {
 	private MemberDao memberDao;
 	@Autowired
 	private BoardDao boardDao;
+	
+	@Autowired
+	private ReplyDao replyDao;
+	
 	private Logger log = LoggerFactory.getLogger(getClass());
 	@Test
 	public void daoTest() {
@@ -38,9 +45,18 @@ public class TestMain {
 		
 		boardDao.register(board);*/
 		
-		boardDao.register("test","test","false","test","pallennellap17@gmail.com");
+//		boardDao.register("test","test","false","test","pallennellap17@gmail.com");
+		/*ReplyDto reply = new ReplyDto();
+		reply.setWriter("pallen@daum.net");
+		reply.setContent("Write Test2");
+		reply.setSecret(false);
+		replyDao.write(2, reply);
+		*/
 		
-		
+		/*List<ReplyDto>list = replyDao.replyList(2); 
+		for (ReplyDto replyDto : list) {
+			System.out.println(replyDto.getNo());
+		}*/
 		
 	}
 	/*@Test*/

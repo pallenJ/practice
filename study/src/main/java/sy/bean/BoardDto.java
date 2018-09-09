@@ -3,8 +3,6 @@ package sy.bean;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import lombok.Data;
 
 @Data
@@ -29,13 +27,14 @@ uploadname varchar2(256),
 	private String writer;
 	private int parent;
 	private int gno;
+	private int rno;
 
 	public BoardDto() {}
 	public BoardDto(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
 		setBoard(rs.getString("board"));
 		setTitle(rs.getString("title"));
-		setSecret((rs.getString("secret")).equals("true"));
+		setSecret(rs.getBoolean("secret"));
 		setContent(rs.getString("content"));
 		
 		setReg(rs.getString("reg"));
@@ -43,5 +42,6 @@ uploadname varchar2(256),
 		setWriter(rs.getString("writer"));
 		setParent(rs.getInt("parent"));
 		setGno(rs.getInt("gno"));
+		setRno(rs.getInt("rno"));
 	}
 }

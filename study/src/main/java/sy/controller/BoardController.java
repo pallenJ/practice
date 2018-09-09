@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import sy.bean.BoardDto;
+import sy.bean.ReplyDto;
 import sy.service.BoardService;
+import sy.service.MemberService;
+import sy.service.ReplyService;
 
 @Controller
 public class BoardController {
@@ -32,9 +35,15 @@ public class BoardController {
 	 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private ReplyService replyService;
+	@Autowired
+	private MemberService memberService;
 	
 	@RequestMapping("/board")
 	public String list(Model model) {
+		
+		
 		int cnum=10;
 		int pnum=10;
 		List<BoardDto> list;
@@ -86,6 +95,33 @@ public class BoardController {
 		
 		model.addAttribute("re_list",true);
 		return "board/list";
+	}
+	@RequestMapping(value="boardShow")
+	public String boardShow(Model model,int no) {
+		BoardDto board = boardService.getDao().boarddetail(no);
+		List<ReplyDto> replyList = replyService.getDao().replyList(no);
+		String email = (String) session.getAttribute("loginEmail");
+		String grade = (String) session.getAttribute("loginGrade");
+		boolean flag = board.isSecret();
+///////////////		
+		if(flag) {
+		
+		try {
+			flag = flag &&!grade.equals("admin")&&!email.equals(board.getWriter());
+		} catch (Exception e) {
+			// TODO: handle exception
+			flag = true;
+			}
+		}
+///////////////
+		
+		if(flag) {
+			model.addAttribute("re_back",true);	
+		}else {
+			model.addAttribute("detail",board);
+			model.addAttribute("rlist",replyList);
+		}
+		return"board/boardShow";
 	}
 	
 }

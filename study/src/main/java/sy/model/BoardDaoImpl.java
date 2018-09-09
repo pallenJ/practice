@@ -16,6 +16,7 @@ import sy.bean.BoardDto;
 public class BoardDaoImpl implements BoardDao{
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -28,7 +29,7 @@ public class BoardDaoImpl implements BoardDao{
 						   board.getUploadpath(),board.getUpload(),board.getUploadname(),
 						   board.getWriter(),no
 		};
-		return jdbcTemplate.update("insert into s_board values(?,?,?,?,?,?,?,?,sysdate,0,?,?,0)", args)>0;
+		return jdbcTemplate.update("insert into s_board values(?,?,?,?,?,?,?,?,sysdate,0,?,?,0,0)", args)>0;
 	}
 	@Override
 	public boolean register(String board,String title,String secret,String content,String writer) {
@@ -85,5 +86,6 @@ public class BoardDaoImpl implements BoardDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 }

@@ -23,22 +23,31 @@
 			<button type='submit' id='sb-btn' class='btn btn-primary'>글쓰기</button>
 		</form>
 	 </div>
+
 	<div align='center'>
 		<table class='table table-striped table-bordered table-hover'>
 			<tr>
 				<th>no</th>
 				<th>board</th>
 				<th>title</th>
-				<th>detail</th>
 				<th>writer</th>
 				<th>reg</th>
 			</tr>
+			
+			
 			<c:forEach var='board' items='${blist}'>
 				<tr>
 					<td>${board.no}
 					<td>${board.board}
-					<td>${board.title}
-					<td>${board.content}
+					<td>
+					<a href="<c:url value='/boardShow'></c:url>?no=${board.no}">${board.title}</a>
+					<c:if test="${board.secret eq 'true'}">
+						<font color="gray" size="2.5">[비밀글]</font>
+					</c:if>
+					<c:if test="${board.rno gt 0}">
+						<font color="red" size="2">[${board.rno}]</font>
+					</c:if>
+					
 					<td>${board.writer}
 					<td>${board.reg}
 						

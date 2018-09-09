@@ -1,6 +1,7 @@
 package sy.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,6 @@ public interface MemberDao {
 	List<MemberDto>list();
 	List<MemberDto>select(String col,String keyword);
 	Set<String>   emailList();
+	Map<String, MemberDto> nameList();
 	boolean overlapCheck(String email);
 }

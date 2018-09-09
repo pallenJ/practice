@@ -66,6 +66,12 @@
 	
 	</div>
 </nav>
+<c:if test='${re_back}'>
+	<script type='text/javascript'>
+		history.back();
+	</script>
+</c:if>
+
 <c:if test='${arl_login}'>
 	<script type='text/javascript'>
 		alert('이미 로그인한 상태입니다.');
