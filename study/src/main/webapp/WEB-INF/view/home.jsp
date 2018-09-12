@@ -23,8 +23,18 @@
 <title>home</title>
 </head>
 <body>
-	<h1><a href='login'>로그인</a></h1>
-	<h1><a href='logout'>로그아웃</a></h1>
+	<h1>
+	<c:choose>
+	<c:when test="${sessionScope.loginEmail eq null||sessionScope.loginEmail==''}">
+	<a href='login'>로그인</a>
+	</c:when>
+	<c:otherwise>
+	<a href='logout'>로그아웃</a>
+	</c:otherwise>
+	</c:choose>
+	</h1>
+	
+	
 	<h1><a href='register'>회원가입</a></h1>
 	<!-- <h1><a href="#" id='email-test'>이메일 인증</a></h1> -->
 	<h1><a href='memberList'>멤버 리스트</a></h1>

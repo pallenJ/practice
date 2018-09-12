@@ -11,16 +11,9 @@
 <script type="text/javascript">
 		$(function () {	
 		$('#login_btn').click(function() {
-			var rsa = new RSAKey();
-	        rsa.setPublic($('#RSAModulus').val(),$('#RSAExponent').val());
-
-	        var email = $('#user_email');
-			var pw    = $('#user_pw');
-			
-			$("#email").val(rsa.encrypt($('#user_email').val()));
-	        $("#pw").val(rsa.encrypt($('#user_pw').val()));
-			$('#login_frm').submit();//계정정보를 암호화 처리
-	        });
+			loginFunction();
+		});
+		
 		$("input").keydown(function (key) {
  
         if(key.keyCode == 13){
@@ -28,6 +21,46 @@
         }
  
     })
+    
+       function loginFunction(){
+			$.ajax({
+				
+				type : 'POST',
+				url : '${pageContext.request.contextPath}' + '/check',
+				
+				data : {
+					'email' : $('#user_email').val()
+				},
+				success : function(data,request) {
+					var flag = data.match('true');
+					if(flag){						
+					alert('없는 사용자 입니다.');
+						if(confirm('회원가입 하시겠습니까?')!=0){
+							location.href = 'register'
+						}
+					}else{
+						var rsa = new RSAKey();
+				        rsa.setPublic($('#RSAModulus').val(),$('#RSAExponent').val());
+						
+				        var email = $('#user_email').val();
+						var pw    = $('#user_pw').val();
+
+						$("#email").val(rsa.encrypt(email));
+				        $("#pw").val(rsa.encrypt(pw));
+						$('#login_frm').submit();//계정정보를 암호화 처리후 전송
+					}
+					
+				},
+				error : function(request, status, error) {
+					alert('fail');
+					alert('code:' + request.status + '\n' + 'message:'
+							+ request.responseText + '\n' + 'error:'
+							+ error);
+				}
+
+			});
+		}
+    
 		});
 		
 </script>

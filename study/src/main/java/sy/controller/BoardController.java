@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import sy.bean.BoardDto;
 import sy.bean.ReplyDto;
@@ -37,8 +38,7 @@ public class BoardController {
 	private BoardService boardService;
 	@Autowired
 	private ReplyService replyService;
-	@Autowired
-	private MemberService memberService;
+	
 	
 	@RequestMapping("/board")
 	public String list(Model model) {
@@ -123,5 +123,24 @@ public class BoardController {
 		}
 		return"board/boardShow";
 	}
-	
+	@RequestMapping(value = "/writeR", method = RequestMethod.POST)
+	@ResponseBody
+	public void writeReply(int no,String secret,String content) {
+		ReplyDto reply = new ReplyDto();
+		boolean sct;
+		
+		try {
+			sct= Boolean.getBoolean(secret);
+		} catch (Exception e) {
+			// TODO: handle exception
+			sct=false;
+		}
+		
+		reply.setBoard(no);
+		reply.setWriter((String)session.getAttribute("loginEmail"));
+	    reply.setSecret(sct);
+		reply.setContent(content);
+		
+		replyService.write(no, reply);
+	}
 }

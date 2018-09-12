@@ -27,7 +27,7 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 	private boolean forWrite(int bno, ReplyDto reply) {
 		reply.setGno(0);
-		reply.setParent(reply.getNo());
+		reply.setParent(0);
 		return getDao().write(bno, reply);
 	}
 	

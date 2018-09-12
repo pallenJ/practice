@@ -78,6 +78,12 @@ public class MemberServiceImpl implements MemberService {
 			return null;
 		}
 	}
+
+	@Override
+	public boolean memberExist(String email) {
+		// TODO Auto-generated method stub
+		return getDao().select("email",email).size()>0;
+	}
 	
 	
 }

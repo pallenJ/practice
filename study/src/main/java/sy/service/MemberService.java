@@ -8,4 +8,5 @@ public interface MemberService {
 	boolean register(String email,String name,String pw);
 	byte[] hexToByteArray(String hex); 
 	public String emailPf(String to);
+	public boolean memberExist(String email);
 }

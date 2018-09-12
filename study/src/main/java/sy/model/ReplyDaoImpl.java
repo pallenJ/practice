@@ -17,10 +17,11 @@ public class ReplyDaoImpl implements ReplyDao{
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public boolean write(int bno, ReplyDto reply) {//답글이 아닌 경우
+	public boolean write(int bno, ReplyDto reply) {
 		// TODO Auto-generated method stub
 		int no = jdbcTemplate.queryForObject("select reply_seq.NEXTVAL from dual", Integer.class);
 		String sql = "insert into s_reply values (?,?,?,sysdate,?,?,?,?)";
+		if(reply.getParent()==0) reply.setParent(no);
 		Object [] args = {no,bno,reply.getWriter(),reply.getParent(),
 				reply.getGno(),reply.isSecret(),reply.getContent()};
 		return jdbcTemplate.update(sql,args)>0;
