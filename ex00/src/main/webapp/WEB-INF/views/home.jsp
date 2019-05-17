@@ -5,7 +5,6 @@
 	<title>Home</title>
 </head>
 <body>
-<jsp:forward page="/board/list"></jsp:forward>
 <h1>
 	Hello world!  
 </h1>
