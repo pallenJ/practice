@@ -71,7 +71,7 @@ pageContext.setAttribute("theme", "journal");
     <script type="text/javascript">
     	$(function () {
     		$("select").change(function(){
-    			var now_theme = $(this).val();
+    			var now_theme = $(this).val();	
     			$("#b-css").prop("href", "https://bootswatch.com/4/"+now_theme+"/bootstrap.css")
     			$("#b-min-css").prop("href", "https://bootswatch.com/4/"+now_theme+"/bootstrap.min.css")
     			$("#v-scss").prop("href", "https://bootswatch.com/4/"+now_theme+"/_variables.scss")
