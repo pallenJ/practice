@@ -76,7 +76,7 @@ pageContext.setAttribute("theme", "journal");
     			$("#b-min-css").prop("href", "https://bootswatch.com/4/"+now_theme+"/bootstrap.min.css")
     			$("#v-scss").prop("href", "https://bootswatch.com/4/"+now_theme+"/_variables.scss")
     			$("#b-scss").prop("href", "https://bootswatch.com/4/"+now_theme+"/_bootswatch.scss")
-     			
+    			
     			}		
     		);
 		})
